@@ -1,154 +1,209 @@
-Real Estate Ad Generator
 
-A Python automation tool that generates professional, social-media-ready real estate advertisement images in bulk. It reads property data from a CSV file, downloads listing images, and overlays branded text, pricing, and call-to-action buttons, mimicking high-quality design standards.
+# 🏡 Real Estate Auto Ad Generator
 
-🌟 Features
+### **Automated Property Image Card Creator (99acres-style)**
 
-Bulk Generation: Process hundreds of property listings from a single CSV file in seconds.
+This tool automatically generates high-quality real estate advertisement cards using Python, PIL, and CSV/Excel property data.
+The output images match the **99acres style**, including:
 
-Smart Image Handling: Automatically downloads, centers, and crops images to fit a 1080x1080 (1:1) social media aspect ratio without distortion.
+✔ Gradient overlay
+✔ Big bold title
+✔ Location pin
+✔ Price & Carpet Area layout
+✔ Blue vertical divider between Price and Carpet Area
+✔ CTA button (“Know More”)
+✔ Auto-cropped property photos
 
-Dynamic Text Overlay: Automatically overlays property titles, locations, prices, and amenities.
+---
 
-Professional Aesthetics:
+## 📌 Features
 
-Gradient Overlays: Adds dynamic gradients to ensure text is readable against any background.
+### ✅ **Generate Ads From CSV**
 
-Branded Ribbons: Generates "Under Construction" or status ribbons dynamically.
+Reads property details (title, location, price, area, image URL, etc.) and auto-creates ads.
 
-Modern UI: Includes CTA buttons ("Enquire Now") and clean typography.
+### ✅ **99acres-Styled Design**
 
-Robust Error Handling: Skips corrupt images or missing data without crashing the batch process.
+* Full-screen image with bottom dark gradient
+* Large white property title
+* Location with custom-drawn blue pin
+* Price & Carpet Area in two columns
+* **Vertical blue rounded divider** between Price & Area
+* Horizontal top separator line
+* "Know More" button (blue CTA)
+* Blue 99acres branding on top-right
 
-🛠️ Prerequisites
+### ✅ **Smart Image Cropping**
 
-You need Python 3.7+ installed on your system.
+Automatically center-crops each property image with **TOP_BIAS** to preserve the important content.
 
-Required Libraries
+### ✅ **High-Quality Output**
 
-Install the necessary Python packages using the provided requirements file:
+* PNG images (lossless)
+* Anti-aliased fonts
+* Smooth rounded shapes and dividers
 
-pip install -r requirements.txt
+---
 
+## 📂 Folder Structure
 
-📂 Project Structure
-
-project-folder/
+```
+project/
 │
-├── ad_generator.py       # The main Python script
-├── Book5.xlsx - Sheet1.csv  # Input data file (your CSV)
-├── requirements.txt      # List of dependencies
-├── arial.ttf             # Regular font file (optional, defaults to system)
-├── arialbd.ttf           # Bold font file (optional, defaults to system)
-│
-└── generated_ads_refined/ # Output folder (created automatically)
-    ├── ad_refined_101.jpg
-    ├── ad_refined_102.jpg
-    └── ...
+├── app.py               # Main generator script
+├── Book5.xlsx - Sheet1.csv   # Input data file
+├── generated_ads_card/       # Output PNG images
+└── README.md                 # Documentation
+```
 
+---
 
-🚀 Usage
+## 📥 Input CSV Format
 
-Prepare your CSV file: Ensure your data matches the expected column headers (see CSV Data Structure below).
+Your input CSV should contain these columns:
 
-Place Font Files: (Optional) For the best look, place arial.ttf and arialbd.ttf in the same folder as the script. If missing, the script will try to use default system fonts.
+| Column Name              | Description                                   |
+| ------------------------ | --------------------------------------------- |
+| `property_ID`            | Unique ID for saving output files             |
+| `property_title`         | Display name of the property                  |
+| `locality`               | Area / locality                               |
+| `city`                   | City name                                     |
+| `price_label`            | Price string (e.g., "₹ 78 Lacs")              |
+| `area`                   | Carpet area (e.g., "1800 sq.ft.")             |
+| `configurations[0].name` | Property type (e.g., 2BHK, INDEPENDENT HOUSE) |
+| `configurations[0].area` | Fallback if area missing                      |
+| `image[0].url`           | Property Image URL                            |
 
-Run the Script:
+---
 
-python ad_generator.py
+## ▶️ How To Run
 
+### **1. Install Required Libraries**
 
-Check Output: The generated images will appear in the generated_ads_refined folder.
+```bash
+pip install pillow pandas requests
+```
 
-📊 CSV Data Structure
+### **2. Place Your CSV File**
 
-The script expects a CSV file (configured as CSV_FILE in the code) with the following columns:
+Name your CSV:
 
-Column Header
+```
+Book5.xlsx - Sheet1.csv
+```
 
-Description
+(or update the filename inside script)
 
-Example
+### **3. Run the Script**
 
-property_ID
+```bash
+python app.py
+```
 
-Unique identifier for the generated filename
+### **4. Output Images**
 
-R424460
+All generated images will appear in:
 
-image[0].url
+```
+generated_ads_card/
+```
 
-Direct URL to the main property image
+Each file is automatically named:
 
-https://example.com/img.jpg
+```
+ad_<property_ID>.png
+```
 
-property_title
+---
 
-Main title of the property
+## 🎨 Appearance Matching 99acres Style
 
-Luxury Apartments
+The script includes:
 
-possession_status
+### **Gradient Overlay**
 
-Text for the top-left ribbon
+Improves text readability.
 
-Under Construction
+### **Font Styling**
 
-locality
+* Titles: bold, large (64px)
+* Labels: medium (24px)
+* Values: large (38px)
 
-Neighborhood name
+### **Blue Divider (Exact Match)**
 
-Nanakramguda
+Vertical blue rounded divider:
 
-city
+```
+Price  |  Carpet Area
+```
 
-City name
+### **Full-Width Blue Line**
 
-Hyderabad
+Thin blue line above the price bar.
 
-configurations[0].name
+### **CTA Button**
 
-Type of unit
+Rounded blue button:
 
-3 BHK Apartment
+```
+[ KNOW MORE ]
+```
 
-price_label
+---
 
-Starting price
+## ⚙️ Configuration Options
 
-1.5 Cr
+Inside the script:
 
-price_max_label
+### ⭐ **TOP_BIAS**
 
-(Optional) Max price for range
+Adjusts how much of the top part of image is preserved.
 
-2.1 Cr
+```python
+TOP_BIAS = 0.18
+```
 
-⚙️ Configuration
+Increase to see more ceiling
+Decrease to see more floor
 
-You can adjust the settings at the top of the ad_generator.py file:
+---
 
-# --- CONFIGURATION ---
-CSV_FILE = 'Book5.xlsx - Sheet1.csv'  # Path to your input CSV
-OUTPUT_DIR = 'generated_ads_refined'  # Folder where images are saved
+## 🖼 Example Output
 
-# Canvas Dimensions
-WIDTH, HEIGHT = 1080, 1080
+(Image similar to your sample 99acres card)
 
-# Colors (Hex Codes)
-BRAND_COLOR = "#004B8D"      # Blue for Ribbon/Brand
-BUTTON_COLOR = "#FFFFFF"     # White for Buttons
-BUTTON_TEXT_COLOR = "#004B8D" # Text inside buttons
+✔ Full image background
+✔ Bottom dark fade
+✔ Big white title
+✔ Blue pin
+✔ Price + Carpet Area divider
+✔ Blue CTA
 
+---
 
-🎨 Customization
+## 🧩 Troubleshooting
 
-Fonts: To use custom fonts (like Roboto or OpenSans), download the .ttf files, place them in the project folder, and update FONT_BOLD_PATH and FONT_REGULAR_PATH in the script.
+### ❗ Font not loading
 
-Brand Logo: Currently, the script types "99acres.com" as text. You can modify the draw_ui function to img.paste() a logo image instead if required.
+Add `Roboto-Bold.ttf` and `Roboto-Regular.ttf` in project root.
 
-📝 Notes
+### ❗ Image looks too dark
 
-Internet Access: The script requires an active internet connection to download images from the URLs provided in the CSV.
+Reduce gradient strength in:
 
-Image Quality: The output quality depends on the resolution of the source images in your CSV. High-res inputs yield the best results.
+```python
+add_gradient_overlay()
+```
+
+### ❗ Image cropping wrong
+
+Adjust:
+
+```python
+TOP_BIAS = 0.18
+```
+
+---
+
+If you want, I can also generate an **example CSV**, **sample output**, or a **GitHub README badge version**.
